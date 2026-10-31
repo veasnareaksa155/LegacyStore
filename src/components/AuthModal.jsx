@@ -11,6 +11,7 @@ import {
   KeyOutlined,
 } from "@ant-design/icons";
 import { createUser, loginUser, loginWithGoogle } from "../services/api";
+import BRAND_LOGO_URL from "../assets/brandLogo";
 
 // Official Google 4-Color SVG Icon
 const GoogleIcon = ({ className = "w-4 h-4" }) => (
@@ -473,7 +474,7 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
             <div>
               <div className="flex items-center space-x-2 mb-2.5">
                 <img
-                  src="/images/LOGO.png"
+                  src={BRAND_LOGO_URL}
                   alt="LEGACY"
                   className="h-6 w-auto object-contain"
                 />
@@ -639,7 +640,7 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
             <div>
               <div className="flex items-center space-x-2 mb-2.5">
                 <img
-                  src="/images/LOGO.png"
+                  src={BRAND_LOGO_URL}
                   alt="LEGACY"
                   className="h-6 w-auto object-contain"
                 />

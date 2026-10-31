@@ -1,4 +1,5 @@
 import React from "react";
+import BRAND_LOGO_URL from "../assets/brandLogo";
 import {
   CrownOutlined,
   SafetyCertificateOutlined,
@@ -80,7 +81,7 @@ const BrandLogoLoop = () => {
 
             <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white border-2 border-amber-400 flex items-center justify-center shadow-[0_0_20px_rgba(251,191,36,0.3)] z-10 p-2 transition-transform duration-300 hover:scale-105">
               <img
-                src="/images/LOGO.png"
+                src={BRAND_LOGO_URL}
                 alt="Alexandre Luxe Emblem"
                 className="w-full h-full object-contain filter drop-shadow-xs"
               />

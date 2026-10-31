@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Badge, Drawer, Input } from "antd";
+import BRAND_LOGO_URL from "../assets/brandLogo";
 import {
   ShoppingOutlined,
   SearchOutlined,
@@ -156,7 +157,7 @@ const Navbar = ({
               onClick={handleHomeClick}
             >
               <img
-                src="/images/LOGO.png"
+                src={BRAND_LOGO_URL}
                 alt="Legacy Store"
                 className="h-10 sm:h-12 w-auto object-contain"
                 onError={(e) => {
@@ -245,7 +246,7 @@ const Navbar = ({
               onClick={handleHomeClick}
             >
               <img
-                src="/images/LOGO.png"
+                src={BRAND_LOGO_URL}
                 alt="Legacy Store"
                 className="h-12 sm:h-14 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                 onError={(e) => {
@@ -552,7 +553,7 @@ const Navbar = ({
               onClick={handleHomeClick}
             >
               <img
-                src="/images/LOGO.png"
+                src={BRAND_LOGO_URL}
                 alt="Logo"
                 className="h-9 sm:h-10 w-auto object-contain"
               />

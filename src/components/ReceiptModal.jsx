@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { Modal, Button } from "antd";
+import BRAND_LOGO_URL from "../assets/brandLogo";
 import {
   PrinterOutlined,
   CloseOutlined,
@@ -147,7 +148,7 @@ const ReceiptModal = ({ open, onClose, order }) => {
             <div>
               <div className="flex items-center gap-3.5 mb-2">
                 <img
-                  src="/images/LOGO.png"
+                  src={BRAND_LOGO_URL}
                   alt="LEGACY"
                   className="h-12 sm:h-14 w-auto object-contain"
                 />

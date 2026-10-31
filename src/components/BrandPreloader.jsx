@@ -1,4 +1,5 @@
 import React from "react";
+import BRAND_LOGO_URL from "../assets/brandLogo";
 
 const BrandPreloader = ({ text = "INITIALIZING LEGACY..." }) => {
   return (
@@ -34,7 +35,7 @@ const BrandPreloader = ({ text = "INITIALIZING LEGACY..." }) => {
         {/* Center Pulsing Logo Emblem */}
         <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-neutral-950 border border-amber-500/40 flex items-center justify-center shadow-2xl z-10 p-2.5 animate-pulse">
           <img
-            src="/images/LOGO.png"
+            src={BRAND_LOGO_URL}
             alt="Legacy Store Logo"
             className="w-full h-full object-contain filter drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]"
             onError={(e) => {

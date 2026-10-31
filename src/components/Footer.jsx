@@ -7,6 +7,7 @@ import {
   FacebookOutlined,
 } from "@ant-design/icons";
 import BeyondHorizon from "./BeyondHorizon";
+import BRAND_LOGO_URL from "../assets/brandLogo";
 
 const Footer = ({ onSelectCategory, onNavigatePage }) => {
   const handleCategoryNav = (catKey) => {
@@ -60,7 +61,7 @@ const Footer = ({ onSelectCategory, onNavigatePage }) => {
               onClick={() => handlePageNav("home")}
             >
               <img
-                src="/images/LOGO.png"
+                src={BRAND_LOGO_URL}
                 alt="Legacy"
                 className="h-12 sm:h-16 w-auto filter invert brightness-200 object-contain transition-transform duration-300 group-hover:scale-105"
                 onError={(e) => {
