@@ -1357,7 +1357,6 @@ const AdminDashboardPage = ({
                 .filter(Boolean)
             : values.colors
           : ["Black", "Grey"],
-        gallery: galleryList,
       };
 
       if (editingProduct) {
