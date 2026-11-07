@@ -11,7 +11,6 @@ import {
   KeyOutlined,
   CopyOutlined,
   CheckOutlined,
-  SettingOutlined,
 } from "@ant-design/icons";
 import { createUser, loginUser, loginWithGoogle } from "../services/api";
 import BRAND_LOGO_URL from "../assets/brandLogo";
@@ -378,27 +377,7 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
           if (tokenResponse?.error) {
             console.warn("Google OAuth popup closed or error:", tokenResponse.error);
             setGoogleLoading(false);
-            if (tokenResponse.error === "popup_closed_by_user") {
-              notification.info({
-                message: "GOOGLE SIGN-IN NOTICE",
-                description: `Saw "Error 400: origin_mismatch"? You can click "Fix origin_mismatch" below or test with Instant VIP login.`,
-                placement: "bottomRight",
-                duration: 8,
-                btn: (
-                  <Button
-                    size="small"
-                    type="primary"
-                    onClick={() => {
-                      notification.destroy();
-                      handleQuickDemoGoogleLogin("veasnareaksa155@gmail.com");
-                    }}
-                    className="bg-black text-white text-[11px] h-7 font-bold cursor-pointer"
-                  >
-                    Instant VIP Login
-                  </Button>
-                ),
-              });
-            } else if (tokenResponse.error !== "access_denied") {
+            if (tokenResponse.error !== "popup_closed_by_user" && tokenResponse.error !== "access_denied") {
               notification.error({
                 message: "GOOGLE SIGN-IN NOTICE",
                 description: `Google error: ${tokenResponse.error_description || tokenResponse.error}`,
@@ -645,21 +624,6 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
                 </div>
               </button>
 
-              {/* Google OAuth Helper / Origin Fix Link */}
-              <div className="flex items-center justify-between px-1 mb-2.5 -mt-1 text-[10px]">
-                <span className="text-neutral-400 font-mono truncate max-w-[190px]">
-                  Origin: <span className="text-neutral-700 font-semibold">{currentOrigin}</span>
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setClientIdModalOpen(true)}
-                  className="text-neutral-500 hover:text-black font-semibold underline cursor-pointer flex items-center gap-1 shrink-0"
-                >
-                  <SettingOutlined className="text-[10px]" />
-                  <span>Fix "origin_mismatch"</span>
-                </button>
-              </div>
-
               {/* Divider */}
               <div className="relative flex items-center justify-center mb-3">
                 <div className="border-t border-neutral-200 w-full" />
@@ -826,21 +790,6 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
                   )}
                 </div>
               </button>
-
-              {/* Google OAuth Helper / Origin Fix Link */}
-              <div className="flex items-center justify-between px-1 mb-2.5 -mt-1 text-[10px]">
-                <span className="text-neutral-400 font-mono truncate max-w-[190px]">
-                  Origin: <span className="text-neutral-700 font-semibold">{currentOrigin}</span>
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setClientIdModalOpen(true)}
-                  className="text-neutral-500 hover:text-black font-semibold underline cursor-pointer flex items-center gap-1 shrink-0"
-                >
-                  <SettingOutlined className="text-[10px]" />
-                  <span>Fix "origin_mismatch"</span>
-                </button>
-              </div>
 
               {/* Divider */}
               <div className="relative flex items-center justify-center mb-2.5">
