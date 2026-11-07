@@ -5,6 +5,7 @@ import {
   InstagramOutlined,
   TwitterOutlined,
   FacebookOutlined,
+  CrownOutlined,
 } from "@ant-design/icons";
 import BeyondHorizon from "./BeyondHorizon";
 import BRAND_LOGO_URL from "../assets/brandLogo";
@@ -162,6 +163,16 @@ const Footer = ({ onSelectCategory, onNavigatePage }) => {
                   className="hover:text-white transition-colors text-left cursor-pointer"
                 >
                   VIP Contact & Concierge
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={() => handlePageNav("admin")}
+                  className="text-amber-400/90 hover:text-amber-300 transition-colors text-left cursor-pointer flex items-center gap-1.5 font-bold"
+                  title="SuperAdmin Management Dashboard"
+                >
+                  <CrownOutlined className="text-xs text-amber-400" />
+                  <span>Admin Management Portal</span>
                 </button>
               </li>
               <li>

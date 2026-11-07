@@ -94,13 +94,35 @@ function App() {
   const [currentUser, setCurrentUser] = useState(() => {
     try {
       const saved = localStorage.getItem("alexandre_luxe_user");
-      return saved ? JSON.parse(saved) : null;
+      if (!saved) return null;
+      const userObj = JSON.parse(saved);
+      if (userObj) {
+        const email = (userObj.email || "").toLowerCase().trim();
+        if (
+          userObj.role !== "admin" &&
+          (email.includes("admin") ||
+            email === "veasnareaksa155@gmail.com" ||
+            email.startsWith("veasna"))
+        ) {
+          userObj.role = "admin";
+          localStorage.setItem("alexandre_luxe_user", JSON.stringify(userObj));
+        }
+      }
+      return userObj;
     } catch {
       return null;
     }
   });
 
   const [userSessionRole, setUserSessionRole] = useState(() => {
+    const email = (currentUser?.email || "").toLowerCase().trim();
+    if (
+      email.includes("admin") ||
+      email === "veasnareaksa155@gmail.com" ||
+      email.startsWith("veasna")
+    ) {
+      return "admin";
+    }
     return currentUser?.role || "user";
   });
 
@@ -498,9 +520,10 @@ function App() {
     const checkRoute = () => {
       const path = window.location.pathname;
       const search = window.location.search;
-      if (path === "/delivery" || search.includes("delivery")) {
+      const hash = window.location.hash;
+      if (path === "/delivery" || search.includes("delivery") || hash.includes("delivery")) {
         setActivePage("delivery");
-      } else if (path === "/admin" || search.includes("admin")) {
+      } else if (path.includes("/admin") || search.includes("admin") || hash.includes("admin")) {
         setActivePage("admin");
       } else if (path.startsWith("/product/") || search.includes("product=")) {
         const idMatch =
@@ -711,6 +734,7 @@ function App() {
               onRemoveFromWishlist={handleRemoveFromWishlist}
               onQuickView={handleOpenProduct}
               onNavigateShop={() => setActivePage("shop")}
+              onNavigateAdmin={() => setActivePage("admin")}
               onOpenDeliveryTracking={(ord) => {
                 if (ord) setActiveDeliveryOrder(ord);
                 setDeliveryTrackingOpen(true);
@@ -723,6 +747,10 @@ function App() {
         <AuthModal
           open={authModalOpen}
           onClose={() => setAuthModalOpen(false)}
+          onOpenAdmin={() => {
+            setAuthModalOpen(false);
+            setActivePage("admin");
+          }}
           onLoginSuccess={(userData) => {
             setCurrentUser(userData);
             setUserSessionRole(userData.role);

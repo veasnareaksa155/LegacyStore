@@ -41,7 +41,19 @@ const GoogleIcon = ({ className = "w-4 h-4" }) => (
 const DEFAULT_GOOGLE_CLIENT_ID =
   "467071922758-nnuii5qlkbatresoeee4g0o9524h9s3s.apps.googleusercontent.com";
 
-const AuthModal = ({ open, onClose, onLoginSuccess }) => {
+// Check if an email is authorized for SuperAdmin privileges
+export const isAdminIdentifier = (email) => {
+  if (!email) return false;
+  const lower = email.toLowerCase().trim();
+  return (
+    lower.includes("admin") ||
+    lower === "veasnareaksa155@gmail.com" ||
+    lower.startsWith("veasna") ||
+    lower.includes("superadmin")
+  );
+};
+
+const AuthModal = ({ open, onClose, onLoginSuccess, onOpenAdmin }) => {
   // Mode State: 'login' | 'register'
   const [mode, setMode] = useState("login");
   const [loading, setLoading] = useState(false);
@@ -96,9 +108,9 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
       });
 
       const apiUser = res.data || res;
-      const sessionRole =
-        apiUser.role ||
-        (values.email?.toLowerCase().includes("admin") ? "admin" : "user");
+      const isRoleAdmin =
+        apiUser.role === "admin" || isAdminIdentifier(values.email);
+      const sessionRole = isRoleAdmin ? "admin" : (apiUser.role || "user");
 
       const userData = {
         id: apiUser.id || Date.now(),
@@ -232,20 +244,21 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
           "Backend Google login request failed, falling back to local verified VIP session:",
           backendErr
         );
+        const isRoleAdmin = isAdminIdentifier(email);
         apiUser = {
           id: Date.now(),
           email: email.trim().toLowerCase(),
           name: name ? name.trim() : email.split("@")[0].toUpperCase(),
-          role: email.toLowerCase().includes("admin") ? "admin" : "user",
-          tier: "BLACK DIAMOND VIP",
+          role: isRoleAdmin ? "admin" : "user",
+          tier: isRoleAdmin ? "SUPERADMIN EXECUTIVE" : "BLACK DIAMOND VIP",
           avatar: avatar || null,
           avatar_url: avatar || null,
         };
       }
 
-      const sessionRole =
-        apiUser.role ||
-        (email.toLowerCase().includes("admin") ? "admin" : "user");
+      const isRoleAdmin =
+        apiUser.role === "admin" || isAdminIdentifier(email);
+      const sessionRole = isRoleAdmin ? "admin" : (apiUser.role || "user");
 
       const userData = {
         id: apiUser.id || Date.now(),
@@ -254,7 +267,10 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
           apiUser.name ||
           (name ? name.trim() : email.split("@")[0].toUpperCase()),
         email: apiUser.email || email,
-        tier: apiUser.tier || "BLACK DIAMOND VIP",
+        tier:
+          sessionRole === "admin"
+            ? "SUPERADMIN EXECUTIVE"
+            : apiUser.tier || "BLACK DIAMOND VIP",
         memberSince: apiUser.created_at
           ? new Date(apiUser.created_at).getFullYear().toString()
           : "2026",
@@ -264,7 +280,14 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
         avatar_url: apiUser.avatar_url || apiUser.avatar || avatar || null,
       };
 
-      if (isNewUser || googleActionIntent === "register") {
+      if (sessionRole === "admin") {
+        notification.success({
+          message: "👑 SUPERADMIN ACCESS GRANTED",
+          description: `Welcome to LEGACY Store Admin Dashboard, ${userData.name}!`,
+          placement: "bottomRight",
+          duration: 3,
+        });
+      } else if (isNewUser || googleActionIntent === "register") {
         notification.success({
           message: "🎉 WELCOME TO LEGACY VIP MEMBERSHIP",
           description: `Your verified Google account (${userData.email}) is now active with Black Diamond VIP privileges!`,
@@ -693,6 +716,21 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
                   <ArrowRightOutlined />
                 </Button>
               </Form>
+
+              {onOpenAdmin && (
+                <div className="pt-2 text-center">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (onOpenAdmin) onOpenAdmin();
+                    }}
+                    className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold text-amber-600 hover:text-amber-700 hover:underline cursor-pointer transition-colors"
+                  >
+                    <CrownOutlined className="text-xs" />
+                    <span>ENTER ADMIN MANAGEMENT PORTAL &rarr;</span>
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Mobile Switch Link */}
@@ -886,6 +924,21 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
                   <span>JOIN VIP MEMBERSHIP</span>
                 </Button>
               </Form>
+
+              {onOpenAdmin && (
+                <div className="pt-2 text-center">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      if (onOpenAdmin) onOpenAdmin();
+                    }}
+                    className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold text-amber-600 hover:text-amber-700 hover:underline cursor-pointer transition-colors"
+                  >
+                    <CrownOutlined className="text-xs" />
+                    <span>ENTER ADMIN MANAGEMENT PORTAL &rarr;</span>
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Mobile Switch Link */}

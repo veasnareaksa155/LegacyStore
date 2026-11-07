@@ -238,6 +238,21 @@ const Navbar = ({
               >
                 CONTACT
               </button>
+
+              <button
+                onClick={() => {
+                  if (onNavigatePage) onNavigatePage("admin");
+                }}
+                className={`text-[11px] font-extrabold tracking-[0.15em] uppercase py-1 px-2.5 rounded-full cursor-pointer transition-all duration-300 relative inline-flex items-center gap-1.5 whitespace-nowrap ${
+                  activePage === "admin"
+                    ? "bg-amber-400 text-black shadow-sm"
+                    : "bg-neutral-100 hover:bg-amber-100 text-neutral-800 hover:text-amber-950 border border-neutral-200 hover:border-amber-400"
+                }`}
+                title="SuperAdmin Management Dashboard"
+              >
+                <CrownOutlined className="text-amber-600 text-xs" />
+                <span>ADMIN</span>
+              </button>
             </nav>
 
             {/* Center Brand Logo (Desktop) */}
@@ -764,6 +779,26 @@ const Navbar = ({
                   className={`text-base mr-3 ${activePage === "contact" ? "text-amber-400" : "text-rose-600"}`}
                 />
                 <span>Contact Concierge</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  if (onNavigatePage) onNavigatePage("admin");
+                }}
+                className={`w-full text-left text-xs sm:text-sm font-extrabold tracking-wide py-3 px-3.5 rounded-xl flex items-center justify-between cursor-pointer transition-all ${
+                  activePage === "admin"
+                    ? "bg-black text-white shadow-md border border-neutral-800"
+                    : "bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-300/80 shadow-xs"
+                }`}
+              >
+                <div className="flex items-center gap-3">
+                  <CrownOutlined className="text-amber-600 text-base" />
+                  <span>Admin Dashboard</span>
+                </div>
+                <span className="text-[9px] font-mono bg-amber-500 text-black font-extrabold px-2 py-0.5 rounded uppercase">
+                  SuperAdmin
+                </span>
               </button>
             </div>
           </div>

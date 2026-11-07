@@ -33,6 +33,7 @@ const UserAccountPage = ({
   onRemoveFromWishlist,
   onQuickView,
   onNavigateShop,
+  onNavigateAdmin,
   onOpenDeliveryTracking,
 }) => {
   // Active User Profile object with fallbacks
@@ -161,14 +162,24 @@ const UserAccountPage = ({
           SUPERADMIN CONTROL SESSION ACTIVE
         </h2>
         <p className="text-xs text-neutral-400 max-w-md mb-6 font-light leading-relaxed">
-          You are currently logged in with SuperAdmin privileges. Admin accounts
-          do not have customer VIP purchase profiles or personal order tracking.
+          You are currently logged in with SuperAdmin privileges ({currentUser.email}).
+          Access complete inventory control, orders management, analytics, and store settings in the Admin Dashboard.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3">
+          {onNavigateAdmin && (
+            <Button
+              type="primary"
+              icon={<CrownOutlined />}
+              onClick={onNavigateAdmin}
+              className="bg-amber-400 hover:bg-amber-500 text-black font-extrabold uppercase tracking-wider h-11 px-6 border-none shadow-lg text-xs"
+            >
+              OPEN ADMIN DASHBOARD &rarr;
+            </Button>
+          )}
           {onNavigateShop && (
             <Button
               onClick={onNavigateShop}
-              className="bg-neutral-800 text-white hover:bg-neutral-700 border-neutral-700 text-xs font-bold uppercase tracking-wider h-10 px-5"
+              className="bg-neutral-800 text-white hover:bg-neutral-700 border-neutral-700 text-xs font-bold uppercase tracking-wider h-11 px-5"
             >
               BROWSE STORE CATALOG
             </Button>
@@ -178,7 +189,7 @@ const UserAccountPage = ({
               danger
               icon={<LogoutOutlined />}
               onClick={onLogout}
-              className="text-xs font-bold uppercase tracking-wider h-10 px-5"
+              className="text-xs font-bold uppercase tracking-wider h-11 px-5"
             >
               SIGN OUT ADMIN
             </Button>
@@ -481,6 +492,18 @@ const UserAccountPage = ({
                   <EditOutlined className="text-amber-400 text-xs" />
                   <span>EDIT PROFILE</span>
                 </button>
+
+                {onNavigateAdmin && (
+                  <button
+                    type="button"
+                    onClick={onNavigateAdmin}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-500 text-black text-[10px] font-mono font-bold uppercase tracking-widest border border-amber-500 shadow-2xs hover:shadow-xs transition-all active:scale-95 cursor-pointer"
+                    title="Open SuperAdmin Control Panel"
+                  >
+                    <CrownOutlined className="text-black text-xs" />
+                    <span>ADMIN DASHBOARD</span>
+                  </button>
+                )}
 
                 {onLogout && (
                   <button
