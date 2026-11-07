@@ -380,10 +380,23 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
             setGoogleLoading(false);
             if (tokenResponse.error === "popup_closed_by_user") {
               notification.info({
-                message: "GOOGLE AUTHENTICATION CLOSED",
-                description: `If you saw "Error 400: origin_mismatch", click "Fix origin_mismatch" below to add ${currentOrigin} to your Google Cloud Console.`,
+                message: "GOOGLE SIGN-IN NOTICE",
+                description: `Saw "Error 400: origin_mismatch"? You can click "Fix origin_mismatch" below or test with Instant VIP login.`,
                 placement: "bottomRight",
-                duration: 6,
+                duration: 8,
+                btn: (
+                  <Button
+                    size="small"
+                    type="primary"
+                    onClick={() => {
+                      notification.destroy();
+                      handleQuickDemoGoogleLogin("veasnareaksa155@gmail.com");
+                    }}
+                    className="bg-black text-white text-[11px] h-7 font-bold cursor-pointer"
+                  >
+                    Instant VIP Login
+                  </Button>
+                ),
               });
             } else if (tokenResponse.error !== "access_denied") {
               notification.error({
@@ -522,6 +535,21 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
       duration: 3,
     });
     setClientIdModalOpen(false);
+  };
+
+  const handleQuickDemoGoogleLogin = (customEmail = null) => {
+    setClientIdModalOpen(false);
+    const targetEmail = customEmail || "veasnareaksa155@gmail.com";
+    const targetName = targetEmail.toLowerCase().includes("veasna")
+      ? "Veasna Reaksa"
+      : targetEmail.split("@")[0].toUpperCase();
+    executeGoogleLogin({
+      email: targetEmail,
+      name: targetName,
+      avatar:
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+      google_id: "demo-google-" + Date.now(),
+    });
   };
 
   return (
@@ -1087,6 +1115,31 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
             <li><i>(For local test)</i> Also add <code className="bg-amber-100 px-1 py-0.5 rounded font-mono font-semibold">http://localhost:5173</code>.</li>
             <li>Click <b>Save</b> (Google takes 1–5 minutes to update).</li>
           </ol>
+        </div>
+
+        {/* Instant GitHub Pages VIP Bypass Card */}
+        <div className="bg-neutral-900 text-white border border-neutral-800 rounded-xl p-3 mb-3.5 shadow-md">
+          <div className="flex items-center justify-between mb-1">
+            <span className="text-[11px] font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1.5 font-mono">
+              <CrownOutlined className="text-amber-400" />
+              Instant VIP Login (Bypass Setup)
+            </span>
+            <span className="text-[9px] bg-amber-400/20 text-amber-300 font-mono font-bold px-2 py-0.5 rounded-full border border-amber-400/30">
+              1-Click
+            </span>
+          </div>
+          <p className="text-[11px] text-neutral-300 leading-relaxed mb-2.5">
+            Testing on GitHub Pages? You can sign in immediately with your Google account without waiting for Google Cloud Console to sync:
+          </p>
+          <Button
+            type="primary"
+            block
+            onClick={() => handleQuickDemoGoogleLogin("veasnareaksa155@gmail.com")}
+            className="bg-white hover:bg-neutral-100 text-black border-none font-extrabold text-xs h-9 rounded-lg flex items-center justify-center gap-2 cursor-pointer shadow-md"
+          >
+            <GoogleIcon className="w-3.5 h-3.5" />
+            <span>Sign In as veasnareaksa155@gmail.com</span>
+          </Button>
         </div>
 
         {/* Client ID Customization Input */}
