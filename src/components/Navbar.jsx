@@ -128,9 +128,9 @@ const Navbar = ({
       <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-neutral-200 transition-all duration-300">
         {/* Top Announcement Banner (Desktop / Tablet) */}
         <div className="hidden sm:block bg-black text-white text-xs py-2 px-4 text-center font-medium tracking-widest uppercase">
-          <span>
-            ✨ Free Worldwide Express Shipping on Orders Over $200 | Legacy
-            Store
+          <span className="inline-flex items-center gap-2">
+            <CarOutlined className="text-amber-400 text-xs" />
+            <span>Free Worldwide Express Shipping on Orders Over $200 | Legacy Store</span>
           </span>
         </div>
 
@@ -361,7 +361,7 @@ const Navbar = ({
                 <button
                   onClick={onOpenDeliveryTracking}
                   className="relative w-10 h-10 shrink-0 aspect-square p-0 bg-amber-500 hover:bg-amber-400 text-black rounded-full transition-all duration-300 flex items-center justify-center border border-amber-600 shadow-md leading-none cursor-pointer group"
-                  title="Track Live Delivery 🚚"
+                  title="Track Live Delivery"
                   aria-label="Track Live Delivery"
                 >
                   <CarOutlined style={{ fontSize: "18px", color: "#000000" }} />
@@ -615,12 +615,14 @@ const Navbar = ({
                       </h4>
                       <div className="mt-1 flex items-center gap-1.5">
                         {user.role === "admin" || userRole === "admin" ? (
-                          <span className="bg-amber-500 text-black text-[9px] font-mono font-black uppercase px-2 py-0.5 rounded shadow-xs">
-                            ⚡ SUPERADMIN
+                          <span className="bg-amber-500 text-black text-[9px] font-mono font-black uppercase px-2 py-0.5 rounded shadow-xs inline-flex items-center gap-1">
+                            <CrownOutlined className="text-[10px]" />
+                            <span>SUPERADMIN</span>
                           </span>
                         ) : (
-                          <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded">
-                            ✨ VIP CLIENTELE
+                          <span className="bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[9px] font-mono font-bold uppercase px-2 py-0.5 rounded inline-flex items-center gap-1">
+                            <CrownOutlined className="text-[10px] text-amber-400" />
+                            <span>VIP CLIENTELE</span>
                           </span>
                         )}
                       </div>
@@ -698,7 +700,10 @@ const Navbar = ({
                   onClick={() => handlePageClick("shop")}
                   className="w-full text-left text-xs font-semibold text-neutral-700 hover:text-black py-1.5 px-2.5 rounded-lg hover:bg-neutral-100 flex items-center justify-between cursor-pointer"
                 >
-                  <span>👔 Shirts & Tailoring</span>
+                  <span className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
+                    <span>Shirts & Tailoring</span>
+                  </span>
                   <span className="bg-amber-100 text-amber-900 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded">
                     NEW
                   </span>
@@ -707,7 +712,10 @@ const Navbar = ({
                   onClick={() => handlePageClick("shop")}
                   className="w-full text-left text-xs font-semibold text-neutral-700 hover:text-black py-1.5 px-2.5 rounded-lg hover:bg-neutral-100 flex items-center justify-between cursor-pointer"
                 >
-                  <span>👕 T-Shirts & Heavyweight Tees</span>
+                  <span className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
+                    <span>T-Shirts & Heavyweight Tees</span>
+                  </span>
                   <span className="bg-red-100 text-red-700 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded">
                     HOT
                   </span>
@@ -716,7 +724,10 @@ const Navbar = ({
                   onClick={() => handlePageClick("shop")}
                   className="w-full text-left text-xs font-semibold text-neutral-700 hover:text-black py-1.5 px-2.5 rounded-lg hover:bg-neutral-100 flex items-center justify-between cursor-pointer"
                 >
-                  <span>👟 Luxury Footwear & Sneakers</span>
+                  <span className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-neutral-400" />
+                    <span>Luxury Footwear & Sneakers</span>
+                  </span>
                   <span className="bg-emerald-100 text-emerald-800 text-[9px] font-mono font-bold px-1.5 py-0.5 rounded">
                     POPULAR
                   </span>
@@ -797,8 +808,9 @@ const Navbar = ({
             )}
 
             <div className="text-center pt-1">
-              <p className="text-[10px] text-neutral-400 font-mono">
-                ✉️ concierge@legacystore.com • Paris
+              <p className="text-[10px] text-neutral-400 font-mono inline-flex items-center justify-center gap-1.5 w-full">
+                <MailOutlined className="text-xs" />
+                <span>concierge@legacystore.com • Paris</span>
               </p>
             </div>
           </div>

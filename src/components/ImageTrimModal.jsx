@@ -186,14 +186,14 @@ const ImageTrimModal = ({
             </div>
           </div>
           <span className="text-[10px] font-mono uppercase tracking-widest text-neutral-400 mt-2">
-            ✨ LIVE CIRCULAR AVATAR PREVIEW
+            LIVE CIRCULAR AVATAR PREVIEW
           </span>
         </div>
 
         {/* Quick Position Alignment Presets (Top / Center / Bottom) */}
         <div>
           <div className="text-[11px] font-bold font-mono uppercase tracking-wider text-neutral-700 mb-2 flex justify-between items-center">
-            <span>⚡ QUICK VERTICAL TRIM PRESETS</span>
+            <span>QUICK VERTICAL TRIM PRESETS</span>
             <Tag color="black" className="m-0 text-[9px] font-mono">
               FIX TOP CUTOFF
             </Tag>

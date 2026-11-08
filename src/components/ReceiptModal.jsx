@@ -5,6 +5,7 @@ import {
   PrinterOutlined,
   CloseOutlined,
   SafetyCertificateOutlined,
+  CheckCircleOutlined,
 } from "@ant-design/icons";
 
 const ReceiptModal = ({ open, onClose, order }) => {
@@ -177,8 +178,9 @@ const ReceiptModal = ({ open, onClose, order }) => {
               </p>
               <p className="text-[10px] font-mono text-neutral-500 m-0 mt-0.5">
                 Status:{" "}
-                <strong className="text-black uppercase">
-                  PAID & VERIFIED ✓
+                <strong className="text-black uppercase inline-flex items-center gap-1">
+                  <CheckCircleOutlined className="text-emerald-600 text-xs" />
+                  <span>PAID & VERIFIED</span>
                 </strong>
               </p>
             </div>

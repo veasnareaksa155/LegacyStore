@@ -246,9 +246,10 @@ const DeliveryTrackingModal = ({
             </div>
             <Tag
               color="emerald"
-              className="bg-emerald-600 text-white font-mono font-bold uppercase tracking-wider text-[10px] px-2.5 py-1 rounded-md border-none shrink-0"
+              className="bg-emerald-600 text-white font-mono font-bold uppercase tracking-wider text-[10px] px-2.5 py-1 rounded-md border-none shrink-0 inline-flex items-center gap-1"
             >
-              ARRIVED ✅
+              <CheckCircleOutlined className="text-xs" />
+              <span>DELIVERED</span>
             </Tag>
           </div>
         )}
@@ -269,7 +270,7 @@ const DeliveryTrackingModal = ({
               },
               {
                 title: "OUT FOR DELIVERY",
-                description: "Courier On Way 🚚",
+                description: "Courier En Route",
               },
               {
                 title: "DELIVERED",
@@ -387,7 +388,7 @@ const DeliveryTrackingModal = ({
                   : "bg-amber-500 text-black"
               }`}
             >
-              {currentStep === 3 ? "✅ ARRIVED AT LOCATION" : "🚚 COURIER LIVE"}
+              {currentStep === 3 ? "ARRIVED AT LOCATION" : "COURIER EN ROUTE"}
             </span>
           </div>
 
@@ -415,10 +416,13 @@ const DeliveryTrackingModal = ({
 
           {/* Bottom Live Map Badge */}
           <div className="absolute bottom-2 left-2 right-2 flex items-center justify-between pointer-events-none">
-            <span className="bg-black/80 backdrop-blur-md text-white text-[9px] font-mono px-2 py-1 rounded border border-white/20">
-              {currentStep === 3
-                ? "📍 Package Arrived • Location Destination Verified"
-                : "📍 Phnom Penh Delivery Zone • Live GPS Satellite Active"}
+            <span className="bg-black/80 backdrop-blur-md text-white text-[9px] font-mono px-2 py-1 rounded border border-white/20 inline-flex items-center gap-1.5">
+              <EnvironmentOutlined className="text-amber-400" />
+              <span>
+                {currentStep === 3
+                  ? "Package Arrived • Location Destination Verified"
+                  : "Phnom Penh Delivery Zone • Live GPS Satellite Active"}
+              </span>
             </span>
             {onNavigateDriverApp && (
               <button
@@ -492,8 +496,9 @@ const DeliveryTrackingModal = ({
                 Shipment Items ({orderItems.length || 1})
               </h4>
             </div>
-            <span className="text-[10px] font-mono text-neutral-500">
-              Luxury Inserts Included ✨
+            <span className="text-[10px] font-mono text-neutral-500 inline-flex items-center gap-1">
+              <CrownOutlined className="text-amber-500 text-[10px]" />
+              <span>Luxury Inserts Included</span>
             </span>
           </div>
 

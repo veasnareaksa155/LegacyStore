@@ -13,6 +13,9 @@ import {
   MessageOutlined,
   WhatsAppOutlined,
   ArrowRightOutlined,
+  CrownOutlined,
+  CarOutlined,
+  SkinOutlined,
 } from "@ant-design/icons";
 import HoverFaqAccordion from "../components/HoverFaqAccordion";
 
@@ -100,14 +103,17 @@ const ContactPage = () => {
 
           {/* Minimal Feature Badges */}
           <div className="pt-3 flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-[11px] font-mono tracking-wider text-neutral-300">
-            <span className="py-1.5 px-3.5 rounded-full bg-neutral-900 border border-neutral-800 flex items-center gap-1.5">
-              <span className="text-amber-400">✨</span> 24/7 VIP Concierge
+            <span className="py-1.5 px-3.5 rounded-full bg-neutral-900 border border-neutral-800 flex items-center gap-2">
+              <CrownOutlined className="text-amber-400 text-xs" />
+              <span>24/7 VIP Concierge</span>
             </span>
-            <span className="py-1.5 px-3.5 rounded-full bg-neutral-900 border border-neutral-800 flex items-center gap-1.5">
-              <span className="text-amber-400">✈️</span> DHL Express Worldwide
+            <span className="py-1.5 px-3.5 rounded-full bg-neutral-900 border border-neutral-800 flex items-center gap-2">
+              <CarOutlined className="text-amber-400 text-xs" />
+              <span>DHL Express Worldwide</span>
             </span>
-            <span className="py-1.5 px-3.5 rounded-full bg-neutral-900 border border-neutral-800 flex items-center gap-1.5">
-              <span className="text-amber-400">📍</span> Paris Flagship Atelier
+            <span className="py-1.5 px-3.5 rounded-full bg-neutral-900 border border-neutral-800 flex items-center gap-2">
+              <EnvironmentOutlined className="text-amber-400 text-xs" />
+              <span>Paris Flagship Atelier</span>
             </span>
           </div>
         </div>
@@ -390,7 +396,7 @@ const ContactPage = () => {
             </div>
 
             <div className="space-y-1 lg:border-r border-neutral-200 lg:pr-4">
-              <span className="text-amber-500 text-lg block mb-1">🧵</span>
+              <SkinOutlined className="text-amber-500 text-lg block mb-1" />
               <span className="font-bold text-xs uppercase tracking-wider text-neutral-900 block font-mono">
                 Private Fittings
               </span>
@@ -400,7 +406,7 @@ const ContactPage = () => {
             </div>
 
             <div className="space-y-1 sm:border-r border-neutral-200 sm:pr-4">
-              <span className="text-amber-500 text-lg block mb-1">✈️</span>
+              <CarOutlined className="text-amber-500 text-lg block mb-1" />
               <span className="font-bold text-xs uppercase tracking-wider text-neutral-900 block font-mono">
                 DHL Express Transit
               </span>
@@ -410,7 +416,7 @@ const ContactPage = () => {
             </div>
 
             <div className="space-y-1">
-              <span className="text-amber-500 text-lg block mb-1">🛡️</span>
+              <SafetyCertificateOutlined className="text-amber-500 text-lg block mb-1" />
               <span className="font-bold text-xs uppercase tracking-wider text-neutral-900 block font-mono">
                 100% Confidential
               </span>

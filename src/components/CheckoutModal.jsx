@@ -7,6 +7,12 @@ import {
   SyncOutlined,
   ThunderboltOutlined,
   CheckOutlined,
+  CreditCardOutlined,
+  CarOutlined,
+  InboxOutlined,
+  CopyOutlined,
+  DownloadOutlined,
+  MobileOutlined,
 } from "@ant-design/icons";
 import {
   BakongKHQR,
@@ -878,13 +884,13 @@ const CheckoutModal = ({
               </div>
               {appliedPromo && promoDiscount > 0 && (
                 <div className="flex justify-between items-center text-emerald-700 font-bold bg-emerald-50/70 px-2 py-1 rounded border border-emerald-200/60 mt-0.5">
-                  <span>🎉 PROMO CODE ({appliedPromo.code}):</span>
+                  <span>PROMO CODE ({appliedPromo.code}):</span>
                   <span>-${promoDiscount.toFixed(2)}</span>
                 </div>
               )}
               {appliedPromo && appliedPromo.isFreeShip && (
                 <div className="flex justify-between items-center text-emerald-700 font-bold bg-emerald-50/70 px-2 py-1 rounded border border-emerald-200/60 mt-0.5">
-                  <span>🎉 PROMO CODE ({appliedPromo.code}):</span>
+                  <span>PROMO CODE ({appliedPromo.code}):</span>
                   <span>FREE SHIPPING APPLIED</span>
                 </div>
               )}
@@ -984,12 +990,13 @@ const CheckoutModal = ({
             <Form.Item
               label={
                 <div className="w-full flex items-center justify-between">
-                  <span className="text-xs font-bold uppercase tracking-wider text-neutral-800">
-                    🚚 Select Delivery Speed / Shipping Method
+                  <span className="text-xs font-bold uppercase tracking-wider text-neutral-800 inline-flex items-center gap-1.5">
+                    <CarOutlined className="text-amber-500 text-sm" />
+                    <span>Select Delivery Speed / Shipping Method</span>
                   </span>
                   {isFreeShipping && deliveryOption === "standard" && (
                     <span className="text-[10px] text-emerald-700 font-mono font-bold bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
-                      🎉 FREE STANDARD SHIPPING APPLIED
+                      FREE STANDARD SHIPPING APPLIED
                     </span>
                   )}
                 </div>
@@ -1033,8 +1040,9 @@ const CheckoutModal = ({
                 >
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-xs font-extrabold uppercase text-black flex items-center gap-1.5">
-                      <Radio checked={deliveryOption === "express"} />⚡ VIP
-                      Express Courier
+                      <Radio checked={deliveryOption === "express"} />
+                      <ThunderboltOutlined className="text-amber-500 text-xs" />
+                      <span>VIP Express Courier</span>
                     </span>
                     <span className="text-xs font-mono font-black text-amber-700">
                       ${expressPrice.toFixed(2)}
@@ -1074,10 +1082,14 @@ const CheckoutModal = ({
                     value="bakong"
                     className="font-extrabold text-xs text-red-950"
                   >
-                    🔴 Bakong Dynamic KHQR (ABA Bank, Acleda, Wing, All Banks)
+                    <span className="inline-flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-red-600 inline-block animate-pulse" />
+                      <span>Bakong Dynamic KHQR (ABA Bank, Acleda, Wing, All Banks)</span>
+                    </span>
                   </Radio>
-                  <span className="text-[9px] font-mono font-black text-red-700 bg-red-100/90 border border-red-200 px-2 py-0.5 rounded-full tracking-widest uppercase">
-                    ⚡ DYNAMIC AMOUNT KHQR
+                  <span className="text-[9px] font-mono font-black text-red-700 bg-red-100/90 border border-red-200 px-2 py-0.5 rounded-full tracking-widest uppercase inline-flex items-center gap-1">
+                    <ThunderboltOutlined className="text-[9px]" />
+                    <span>DYNAMIC AMOUNT KHQR</span>
                   </span>
                 </div>
 
@@ -1096,16 +1108,20 @@ const CheckoutModal = ({
                     value="card"
                     className={`font-bold text-xs ${selectedPaymentMethod === "card" ? "text-white" : "text-black"}`}
                   >
-                    💳 Credit / Debit Card (Visa, Mastercard, Amex, JCB)
+                    <span className="inline-flex items-center gap-2">
+                      <CreditCardOutlined className="text-sm" />
+                      <span>Credit / Debit Card (Visa, Mastercard, Amex, JCB)</span>
+                    </span>
                   </Radio>
                   <span
-                    className={`text-[10px] font-mono font-bold ${
+                    className={`text-[10px] font-mono font-bold inline-flex items-center gap-1 ${
                       selectedPaymentMethod === "card"
                         ? "text-amber-400"
                         : "text-neutral-400"
                     }`}
                   >
-                    🔒 256-BIT SECURE VIP
+                    <LockOutlined className="text-[10px]" />
+                    <span>256-BIT SECURE VIP</span>
                   </span>
                 </div>
 
@@ -1316,8 +1332,9 @@ const CheckoutModal = ({
                   <Radio value="cod" className="font-bold text-xs text-black">
                     Cash on Delivery (COD)
                   </Radio>
-                  <span className="text-[10px] text-neutral-400 font-mono font-bold">
-                    📦 PAY ON HANDOVER
+                  <span className="text-[10px] text-neutral-400 font-mono font-bold inline-flex items-center gap-1">
+                    <InboxOutlined className="text-xs" />
+                    <span>PAY ON HANDOVER</span>
                   </span>
                 </div>
               </Radio.Group>
@@ -1509,7 +1526,7 @@ const CheckoutModal = ({
               href={khqrData.deeplink}
               className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-gradient-to-r from-red-600 via-rose-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-mono font-black text-xs uppercase tracking-wider rounded-xl shadow-lg transition-transform active:scale-98 cursor-pointer"
             >
-              <span className="text-base">📱</span>
+              <MobileOutlined className="text-base" />
               <span>TAP TO PAY IN ABA / BAKONG APP</span>
             </a>
           )}
@@ -1521,7 +1538,7 @@ const CheckoutModal = ({
               onClick={handleDownloadQrImage}
               className="flex items-center gap-1.5 text-[10px] font-mono font-bold bg-neutral-100 hover:bg-neutral-200 text-neutral-800 px-3 py-1.5 rounded-lg border border-neutral-300 transition-colors cursor-pointer"
             >
-              <span>💾</span>
+              <DownloadOutlined className="text-xs" />
               <span>SAVE QR TO GALLERY</span>
             </button>
             <button
@@ -1537,9 +1554,10 @@ const CheckoutModal = ({
                   duration: 2,
                 });
               }}
-              className="text-[10px] font-mono text-neutral-500 hover:text-black underline font-bold uppercase tracking-wider cursor-pointer"
+              className="text-[10px] font-mono text-neutral-500 hover:text-black underline font-bold uppercase tracking-wider cursor-pointer inline-flex items-center gap-1"
             >
-              📋 COPY RAW KHQR
+              <CopyOutlined className="text-xs" />
+              <span>COPY RAW KHQR</span>
             </button>
           </div>
 

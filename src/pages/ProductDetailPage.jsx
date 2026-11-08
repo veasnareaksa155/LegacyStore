@@ -9,6 +9,7 @@ import {
   StarFilled,
   CheckOutlined,
   CheckCircleOutlined,
+  CheckCircleFilled,
   SafetyCertificateOutlined,
   SyncOutlined,
   CarOutlined,
@@ -1248,8 +1249,9 @@ const ProductDetailPage = ({
                             <span className="text-xs font-serif font-bold text-black">
                               {rev.user_name}
                             </span>
-                            <span className="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200">
-                              ✓ Verified Buyer
+                            <span className="text-[9px] font-mono text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200 inline-flex items-center gap-1">
+                              <CheckCircleFilled className="text-[9px] text-emerald-600" />
+                              <span>Verified Buyer</span>
                             </span>
                           </div>
                           <span className="text-[10px] font-mono text-neutral-400">
@@ -1359,8 +1361,9 @@ const ProductDetailPage = ({
         centered
         width={540}
         title={
-          <span className="font-serif font-black uppercase text-sm tracking-wider">
-            📏 Luxury Size Guide & Fit Specifications
+          <span className="font-serif font-black uppercase text-sm tracking-wider inline-flex items-center gap-2">
+            <TableOutlined className="text-amber-500" />
+            <span>Luxury Size Guide & Fit Specifications</span>
           </span>
         }
       >

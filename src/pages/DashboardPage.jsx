@@ -366,25 +366,25 @@ const DashboardPage = ({
         if (stockNum === 0) {
           stockBadge = (
             <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-black bg-rose-100 text-rose-800 border border-rose-300 shadow-xs">
-              🚨 OUT OF STOCK (0 pcs)
+              OUT OF STOCK (0 pcs)
             </span>
           );
         } else if (stockNum <= 5) {
           stockBadge = (
             <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-black bg-amber-100 text-amber-900 border border-amber-300 shadow-xs animate-pulse">
-              ⚠️ LOW STOCK ({stockNum} pcs)
+              LOW STOCK ({stockNum} pcs)
             </span>
           );
         } else if (stockNum <= 10) {
           stockBadge = (
             <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-extrabold bg-yellow-100 text-yellow-900 border border-yellow-300 shadow-xs">
-              ⚡ LIMITED ({stockNum} pcs)
+              LIMITED ({stockNum} pcs)
             </span>
           );
         } else {
           stockBadge = (
             <span className="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-300 shadow-xs">
-              ✓ IN STOCK ({stockNum} pcs)
+              IN STOCK ({stockNum} pcs)
             </span>
           );
         }
@@ -621,7 +621,7 @@ const DashboardPage = ({
               }`}
             >
               <UserOutlined />
-              <span>👤 USER SESSION</span>
+              <span>USER SESSION</span>
             </button>
 
             <button
@@ -633,7 +633,7 @@ const DashboardPage = ({
               }`}
             >
               <CrownOutlined />
-              <span>⚡ ADMIN SESSION</span>
+              <span>ADMIN SESSION</span>
             </button>
           </div>
         </div>
@@ -665,8 +665,9 @@ const DashboardPage = ({
                   <p className="text-xs text-neutral-500 font-mono">
                     {userProfile.email} • Member Since {userProfile.memberSince}
                   </p>
-                  <p className="text-xs text-neutral-600 font-light mt-1">
-                    📍 {userProfile.address}
+                  <p className="text-xs text-neutral-600 font-light mt-1 flex items-center gap-1.5">
+                    <EnvironmentOutlined className="text-amber-500" />
+                    <span>{userProfile.address}</span>
                   </p>
                 </div>
               </div>
@@ -882,7 +883,7 @@ const DashboardPage = ({
                   key: "1",
                   label: (
                     <span className="font-extrabold uppercase text-xs tracking-wider">
-                      📦 PRODUCT CATALOG MANAGEMENT ({products.length})
+                      PRODUCT CATALOG MANAGEMENT ({products.length})
                     </span>
                   ),
                   children: (
@@ -929,7 +930,7 @@ const DashboardPage = ({
                   key: "2",
                   label: (
                     <span className="font-extrabold uppercase text-xs tracking-wider">
-                      🛍️ CUSTOMER ORDERS FULFILMENT ({orders.length})
+                      CUSTOMER ORDERS FULFILMENT ({orders.length})
                     </span>
                   ),
                   children: (
@@ -961,7 +962,7 @@ const DashboardPage = ({
                   key: "3",
                   label: (
                     <span className="font-extrabold uppercase text-xs tracking-wider">
-                      🏷️ CATEGORY BREAKDOWN ({categories.length})
+                      CATEGORY BREAKDOWN ({categories.length})
                     </span>
                   ),
                   children: (

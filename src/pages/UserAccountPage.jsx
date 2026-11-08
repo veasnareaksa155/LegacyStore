@@ -479,8 +479,16 @@ const UserAccountPage = ({
                 </Tag>
               </div>
 
-              <p className="text-[11px] sm:text-xs text-neutral-500 font-mono mb-2">
-                📧 {profile.email} • 📞 {profile.phone || "+33 1 42 68 55 00"}
+              <p className="text-[11px] sm:text-xs text-neutral-500 font-mono mb-2 flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                <span className="inline-flex items-center gap-1">
+                  <MailOutlined className="text-neutral-400 text-xs" />
+                  <span>{profile.email}</span>
+                </span>
+                <span>•</span>
+                <span className="inline-flex items-center gap-1">
+                  <PhoneOutlined className="text-neutral-400 text-xs" />
+                  <span>{profile.phone || "+33 1 42 68 55 00"}</span>
+                </span>
               </p>
 
               <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2.5 pt-1">

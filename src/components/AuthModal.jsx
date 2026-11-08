@@ -8,6 +8,7 @@ import {
   IdcardOutlined,
   SafetyCertificateOutlined,
   CrownOutlined,
+  CarOutlined,
   KeyOutlined,
   CopyOutlined,
   CheckOutlined,
@@ -270,14 +271,14 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
 
       if (sessionRole === "admin") {
         notification.success({
-          message: "👑 SUPERADMIN ACCESS GRANTED",
+          message: "SUPERADMIN ACCESS GRANTED",
           description: `Welcome to LEGACY Store Admin Dashboard, ${userData.name}!`,
           placement: "bottomRight",
           duration: 3,
         });
       } else if (isNewUser || googleActionIntent === "register") {
         notification.success({
-          message: "🎉 WELCOME TO LEGACY VIP MEMBERSHIP",
+          message: "WELCOME TO LEGACY VIP MEMBERSHIP",
           description: `Your verified Google account (${userData.email}) is now active with Black Diamond VIP privileges!`,
           placement: "bottomRight",
           duration: 4,
@@ -883,8 +884,9 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
                 </div>
 
                 <div className="pb-2">
-                  <p className="text-[10px] text-neutral-500 font-mono uppercase tracking-widest">
-                    ✨ Worldwide Express Delivery
+                  <p className="text-[10px] text-neutral-500 font-mono uppercase tracking-widest inline-flex items-center gap-1.5">
+                    <CarOutlined className="text-amber-500" />
+                    <span>Worldwide Express Delivery</span>
                   </p>
                 </div>
               </div>
@@ -924,8 +926,9 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
                 </div>
 
                 <div className="pb-2">
-                  <p className="text-[10px] text-neutral-500 font-mono uppercase tracking-widest">
-                    ✨ 24/7 VIP Concierge Services
+                  <p className="text-[10px] text-neutral-500 font-mono uppercase tracking-widest inline-flex items-center gap-1.5">
+                    <CrownOutlined className="text-amber-500" />
+                    <span>24/7 VIP Concierge Services</span>
                   </p>
                 </div>
               </div>

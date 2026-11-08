@@ -874,19 +874,19 @@ const AdminDashboardPage = ({
   const triggerTestNotification = () => {
     const alerts = [
       {
-        title: `⚡ Live Order #${Math.floor(1000 + Math.random() * 9000)} Received`,
+        title: `Live Order #${Math.floor(1000 + Math.random() * 9000)} Received`,
         description: `VIP Customer checkout completed ($${(Math.random() * 900 + 150).toFixed(2)})`,
         type: "order",
         actionTab: "orders",
       },
       {
-        title: "🚚 Driver Status Update",
+        title: "Driver Status Update",
         description: "Delivery Driver completed package dropoff",
         type: "driver",
         actionTab: "drivers",
       },
       {
-        title: "⚠️ Inventory Threshold Alert",
+        title: "Inventory Threshold Alert",
         description: "High demand product inventory down to last 3 units",
         type: "inventory",
         actionTab: "products",
