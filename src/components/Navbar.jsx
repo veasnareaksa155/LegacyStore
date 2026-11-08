@@ -10,7 +10,6 @@ import {
   HomeOutlined,
   AppstoreOutlined,
   InfoCircleOutlined,
-  CameraOutlined,
   MailOutlined,
   UserOutlined,
   CrownOutlined,
@@ -723,20 +722,6 @@ const Navbar = ({
                   </span>
                 </button>
               </div>
-
-              <button
-                onClick={() => handlePageClick("lookbook")}
-                className={`w-full text-left text-xs sm:text-sm font-extrabold tracking-wide py-3 px-3.5 rounded-xl flex items-center cursor-pointer transition-all ${
-                  activePage === "lookbook"
-                    ? "bg-black text-white shadow-md border border-neutral-800"
-                    : "bg-neutral-50 hover:bg-neutral-100 text-neutral-800"
-                }`}
-              >
-                <CameraOutlined
-                  className={`text-base mr-3 ${activePage === "lookbook" ? "text-amber-400" : "text-emerald-600"}`}
-                />
-                <span>Lookbook & Models</span>
-              </button>
 
               <button
                 onClick={() => handlePageClick("about")}
