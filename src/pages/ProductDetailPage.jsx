@@ -8,6 +8,7 @@ import {
   ShoppingOutlined,
   StarFilled,
   CheckOutlined,
+  CheckCircleOutlined,
   SafetyCertificateOutlined,
   SyncOutlined,
   CarOutlined,
@@ -38,6 +39,7 @@ const ProductDetailPage = ({
   const [quantity, setQuantity] = useState(1);
   const [activeImage, setActiveImage] = useState("");
   const [isZoomed, setIsZoomed] = useState(false);
+  const [addedRecently, setAddedRecently] = useState(false);
   const [activeTab, setActiveTab] = useState("details");
   const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
 
@@ -315,6 +317,8 @@ const ProductDetailPage = ({
 
   const handleAddToCartClick = () => {
     onAddToCart(product, quantity, selectedSize, selectedColor);
+    setAddedRecently(true);
+    setTimeout(() => setAddedRecently(false), 2000);
   };
 
   // Submit Rating & Review handler
@@ -734,53 +738,169 @@ const ProductDetailPage = ({
                   </div>
                 )}
 
-                {/* 3. Quantity & Add to Cart Action Row */}
-                <div className="pt-2 flex flex-col sm:flex-row gap-3 items-stretch">
-                  {/* Quantity Stepper */}
-                  <div className="flex items-center justify-between border-2 border-neutral-300 rounded-xl px-3 py-2 bg-white w-full sm:w-32 shrink-0">
+                {/* 3. Modern Luxury Action Row: Quantity + Add to Bag + Wishlist */}
+                <div className="pt-2 space-y-3">
+                  {/* DESKTOP LAYOUT (sm: and up): Single elegant unified bar */}
+                  <div className="hidden sm:flex items-center gap-3">
+                    {/* Desktop Quantity Stepper */}
+                    <div className="flex items-center justify-between border-2 border-neutral-300 hover:border-black rounded-xl px-3.5 h-13 bg-white w-36 shrink-0 transition-all shadow-xs">
+                      <button
+                        type="button"
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        disabled={quantity <= 1}
+                        className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-lg text-neutral-600 hover:text-black hover:bg-neutral-100 disabled:opacity-25 transition-all cursor-pointer active:scale-90"
+                        aria-label="Decrease quantity"
+                      >
+                        −
+                      </button>
+                      <span className="font-mono font-black text-base text-black select-none">
+                        {quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="w-8 h-8 rounded-lg flex items-center justify-center font-bold text-lg text-neutral-600 hover:text-black hover:bg-neutral-100 transition-all cursor-pointer active:scale-90"
+                        aria-label="Increase quantity"
+                      >
+                        +
+                      </button>
+                    </div>
+
+                    {/* Desktop Primary Add to Bag Button */}
                     <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      disabled={quantity <= 1}
-                      className="w-6 h-6 flex items-center justify-center font-bold text-base hover:text-amber-600 disabled:opacity-30 cursor-pointer"
+                      type="button"
+                      onClick={handleAddToCartClick}
+                      className={`flex-1 h-13 px-6 rounded-xl font-serif font-black text-sm uppercase tracking-[0.15em] flex items-center justify-between transition-all cursor-pointer active:scale-[0.99] border shadow-lg hover:shadow-xl group ${
+                        addedRecently
+                          ? "bg-emerald-700 text-white border-emerald-600 shadow-emerald-900/30"
+                          : "bg-black hover:bg-neutral-900 active:bg-neutral-950 text-white border-neutral-800"
+                      }`}
                     >
-                      -
+                      <div className="flex items-center gap-3">
+                        {addedRecently ? (
+                          <CheckCircleOutlined className="text-xl text-white animate-bounce" />
+                        ) : (
+                          <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <ShoppingOutlined className="text-base text-amber-400" />
+                          </div>
+                        )}
+                        <span className="font-serif font-bold tracking-widest text-sm">
+                          {addedRecently ? "ADDED TO BAG ✓" : "ADD TO BAG"}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1.5 font-mono">
+                        <span className="text-sm font-black text-amber-300 bg-white/15 px-3 py-1 rounded-md border border-white/10">
+                          ${(price * quantity).toFixed(2)}
+                        </span>
+                      </div>
                     </button>
-                    <span className="font-mono font-extrabold text-sm text-black">
-                      {quantity}
-                    </span>
+
+                    {/* Desktop Wishlist Button */}
                     <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="w-6 h-6 flex items-center justify-center font-bold text-base hover:text-amber-600 cursor-pointer"
+                      type="button"
+                      onClick={() => onToggleWishlist(product)}
+                      className={`w-13 h-13 rounded-xl border-2 flex items-center justify-center transition-all cursor-pointer shrink-0 active:scale-95 shadow-xs ${
+                        isWishlisted
+                          ? "border-rose-500 bg-rose-50 text-rose-600 shadow-sm"
+                          : "border-neutral-300 hover:border-black bg-white text-neutral-700 hover:text-black"
+                      }`}
+                      title={isWishlisted ? "Remove from wishlist" : "Save to wishlist"}
+                      aria-label="Toggle wishlist"
                     >
-                      +
+                      {isWishlisted ? (
+                        <HeartFilled className="text-xl text-rose-600 animate-pulse" />
+                      ) : (
+                        <HeartOutlined className="text-xl" />
+                      )}
                     </button>
                   </div>
 
-                  {/* Primary Add to Cart Button (Velora Style) */}
-                  <button
-                    onClick={handleAddToCartClick}
-                    className="flex-1 bg-black hover:bg-neutral-800 text-white h-12 rounded-xl font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 shadow-lg transition-all cursor-pointer active:scale-98"
-                  >
-                    <ShoppingOutlined className="text-base" />
-                    <span>Add to Bag — ${(price * quantity).toFixed(2)}</span>
-                  </button>
+                  {/* MOBILE LAYOUT (< sm screen): Ergonomic 2-row layout engineered for mobile screens */}
+                  <div className="sm:hidden space-y-2.5">
+                    {/* Row 1: Quantity Control Bar (Left) + Wishlist Button (Right) */}
+                    <div className="flex items-center gap-2.5">
+                      {/* Sleek Mobile Quantity Stepper */}
+                      <div className="flex-1 flex items-center justify-between border-2 border-neutral-300 rounded-xl px-3.5 h-12 bg-neutral-50/90 shadow-2xs">
+                        <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-neutral-500">
+                          Quantity
+                        </span>
+                        <div className="flex items-center gap-3">
+                          <button
+                            type="button"
+                            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                            disabled={quantity <= 1}
+                            className="w-8 h-8 rounded-lg bg-white border border-neutral-200 flex items-center justify-center font-bold text-base text-neutral-800 active:scale-90 disabled:opacity-30 transition-all cursor-pointer shadow-xs"
+                            aria-label="Decrease quantity"
+                          >
+                            −
+                          </button>
+                          <span className="font-mono font-black text-base text-black min-w-[20px] text-center select-none">
+                            {quantity}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => setQuantity(quantity + 1)}
+                            className="w-8 h-8 rounded-lg bg-white border border-neutral-200 flex items-center justify-center font-bold text-base text-neutral-800 active:scale-90 transition-all cursor-pointer shadow-xs"
+                            aria-label="Increase quantity"
+                          >
+                            +
+                          </button>
+                        </div>
+                      </div>
 
-                  {/* Wishlist Button */}
-                  <button
-                    onClick={() => onToggleWishlist(product)}
-                    className={`w-12 h-12 rounded-xl border-2 flex items-center justify-center transition-all cursor-pointer shrink-0 ${
-                      isWishlisted
-                        ? "border-rose-500 bg-rose-50 text-rose-600 shadow-sm"
-                        : "border-neutral-300 hover:border-black bg-white text-neutral-700 hover:text-black"
-                    }`}
-                    title={isWishlisted ? "Remove from wishlist" : "Save to wishlist"}
-                  >
-                    {isWishlisted ? (
-                      <HeartFilled className="text-lg text-rose-600 animate-pulse" />
-                    ) : (
-                      <HeartOutlined className="text-lg" />
-                    )}
-                  </button>
+                      {/* Mobile Wishlist Button */}
+                      <button
+                        type="button"
+                        onClick={() => onToggleWishlist(product)}
+                        className={`h-12 px-4 rounded-xl border-2 flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95 shadow-2xs shrink-0 ${
+                          isWishlisted
+                            ? "border-rose-400 bg-rose-50 text-rose-600"
+                            : "border-neutral-300 hover:border-black bg-white text-neutral-800"
+                        }`}
+                        title={isWishlisted ? "Remove from wishlist" : "Save to wishlist"}
+                        aria-label="Toggle wishlist"
+                      >
+                        {isWishlisted ? (
+                          <HeartFilled className="text-xl text-rose-600 animate-pulse" />
+                        ) : (
+                          <HeartOutlined className="text-xl" />
+                        )}
+                        <span className="text-xs font-mono font-bold uppercase">
+                          {isWishlisted ? "Saved" : "Save"}
+                        </span>
+                      </button>
+                    </div>
+
+                    {/* Row 2: Prominent Full-Width ADD TO BAG Button with Price Tag */}
+                    <button
+                      type="button"
+                      onClick={handleAddToCartClick}
+                      className={`w-full h-14 rounded-xl font-serif font-black text-sm uppercase tracking-[0.12em] flex items-center justify-between px-5 shadow-lg active:scale-[0.98] transition-all cursor-pointer border ${
+                        addedRecently
+                          ? "bg-emerald-700 text-white border-emerald-600 shadow-emerald-900/30"
+                          : "bg-black hover:bg-neutral-900 active:bg-neutral-950 text-white border-neutral-900"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        {addedRecently ? (
+                          <CheckCircleOutlined className="text-xl text-white animate-bounce" />
+                        ) : (
+                          <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+                            <ShoppingOutlined className="text-base text-amber-400" />
+                          </div>
+                        )}
+                        <span className="font-serif font-black text-sm tracking-wider text-white">
+                          {addedRecently ? "ADDED TO BAG ✓" : "ADD TO BAG"}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 font-mono">
+                        <span className="text-sm font-black text-amber-300 bg-white/15 px-3 py-1.5 rounded-lg border border-white/10">
+                          ${(price * quantity).toFixed(2)}
+                        </span>
+                      </div>
+                    </button>
+                  </div>
                 </div>
               </div>
 
