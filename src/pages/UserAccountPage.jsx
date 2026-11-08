@@ -493,18 +493,6 @@ const UserAccountPage = ({
                   <span>EDIT PROFILE</span>
                 </button>
 
-                {onNavigateAdmin && (
-                  <button
-                    type="button"
-                    onClick={onNavigateAdmin}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-amber-400 hover:bg-amber-500 text-black text-[10px] font-mono font-bold uppercase tracking-widest border border-amber-500 shadow-2xs hover:shadow-xs transition-all active:scale-95 cursor-pointer"
-                    title="Open SuperAdmin Control Panel"
-                  >
-                    <CrownOutlined className="text-black text-xs" />
-                    <span>ADMIN DASHBOARD</span>
-                  </button>
-                )}
-
                 {onLogout && (
                   <button
                     type="button"

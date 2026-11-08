@@ -53,7 +53,7 @@ export const isAdminIdentifier = (email) => {
   );
 };
 
-const AuthModal = ({ open, onClose, onLoginSuccess, onOpenAdmin }) => {
+const AuthModal = ({ open, onClose, onLoginSuccess }) => {
   // Mode State: 'login' | 'register'
   const [mode, setMode] = useState("login");
   const [loading, setLoading] = useState(false);
@@ -716,21 +716,6 @@ const AuthModal = ({ open, onClose, onLoginSuccess, onOpenAdmin }) => {
                   <ArrowRightOutlined />
                 </Button>
               </Form>
-
-              {onOpenAdmin && (
-                <div className="pt-2 text-center">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (onOpenAdmin) onOpenAdmin();
-                    }}
-                    className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold text-amber-600 hover:text-amber-700 hover:underline cursor-pointer transition-colors"
-                  >
-                    <CrownOutlined className="text-xs" />
-                    <span>ENTER ADMIN MANAGEMENT PORTAL &rarr;</span>
-                  </button>
-                </div>
-              )}
             </div>
 
             {/* Mobile Switch Link */}
@@ -924,21 +909,6 @@ const AuthModal = ({ open, onClose, onLoginSuccess, onOpenAdmin }) => {
                   <span>JOIN VIP MEMBERSHIP</span>
                 </Button>
               </Form>
-
-              {onOpenAdmin && (
-                <div className="pt-2 text-center">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (onOpenAdmin) onOpenAdmin();
-                    }}
-                    className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold text-amber-600 hover:text-amber-700 hover:underline cursor-pointer transition-colors"
-                  >
-                    <CrownOutlined className="text-xs" />
-                    <span>ENTER ADMIN MANAGEMENT PORTAL &rarr;</span>
-                  </button>
-                </div>
-              )}
             </div>
 
             {/* Mobile Switch Link */}

@@ -540,33 +540,42 @@ function App() {
     };
     checkRoute();
     window.addEventListener("popstate", checkRoute);
-    return () => window.removeEventListener("popstate", checkRoute);
+    window.addEventListener("hashchange", checkRoute);
+    return () => {
+      window.removeEventListener("popstate", checkRoute);
+      window.removeEventListener("hashchange", checkRoute);
+    };
   }, [products]);
 
   // Sync browser URL bar with activePage state
   useEffect(() => {
-    if (activePage === "delivery" && window.location.pathname !== "/delivery") {
-      window.history.pushState({}, "", "/delivery");
+    const baseUrl = import.meta.env.BASE_URL || "/";
+    const cleanBase = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+
+    if (activePage === "delivery" && !window.location.pathname.includes("/delivery")) {
+      window.history.pushState({}, "", `${cleanBase}/delivery`);
     } else if (
       activePage === "admin" &&
-      window.location.pathname !== "/admin"
+      !window.location.pathname.includes("/admin") &&
+      !window.location.search.includes("admin") &&
+      !window.location.hash.includes("admin")
     ) {
-      window.history.pushState({}, "", "/admin");
+      window.history.pushState({}, "", `${cleanBase}/admin`);
     } else if (
       activePage === "product" &&
       selectedProduct &&
-      window.location.pathname !== `/product/${selectedProduct.id}`
+      !window.location.pathname.includes(`/product/${selectedProduct.id}`)
     ) {
-      window.history.pushState({}, "", `/product/${selectedProduct.id}`);
+      window.history.pushState({}, "", `${cleanBase}/product/${selectedProduct.id}`);
     } else if (
       activePage !== "admin" &&
       activePage !== "delivery" &&
       activePage !== "product" &&
-      (window.location.pathname === "/admin" ||
-        window.location.pathname === "/delivery" ||
-        window.location.pathname.startsWith("/product/"))
+      (window.location.pathname.includes("/admin") ||
+        window.location.pathname.includes("/delivery") ||
+        window.location.pathname.includes("/product/"))
     ) {
-      window.history.pushState({}, "", "/");
+      window.history.pushState({}, "", cleanBase || "/");
     }
   }, [activePage, selectedProduct]);
 
@@ -747,10 +756,6 @@ function App() {
         <AuthModal
           open={authModalOpen}
           onClose={() => setAuthModalOpen(false)}
-          onOpenAdmin={() => {
-            setAuthModalOpen(false);
-            setActivePage("admin");
-          }}
           onLoginSuccess={(userData) => {
             setCurrentUser(userData);
             setUserSessionRole(userData.role);
