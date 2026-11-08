@@ -762,10 +762,9 @@ function App() {
           onLoginSuccess={(userData) => {
             setCurrentUser(userData);
             setUserSessionRole(userData.role);
+            setCheckoutOpen(false);
             if (userData.role === "admin") {
               setActivePage("admin");
-            } else if (cartItems.length > 0) {
-              setCheckoutOpen(true);
             } else {
               setActivePage("account");
             }

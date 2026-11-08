@@ -418,6 +418,10 @@ const CheckoutModal = ({
 
   useEffect(() => {
     if (open) {
+      if (!cartItems || cartItems.length === 0) {
+        onClose();
+        return;
+      }
       setDeliverySettings(getDeliverySettings());
       if (currentUser) {
         form.setFieldsValue({
@@ -428,7 +432,7 @@ const CheckoutModal = ({
         });
       }
     }
-  }, [open, currentUser, form]);
+  }, [open, cartItems, currentUser, form, onClose]);
 
   const subtotal = cartItems.reduce(
     (sum, item) => sum + Number(item.price) * item.quantity,
