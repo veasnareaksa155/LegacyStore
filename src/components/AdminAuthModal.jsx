@@ -12,6 +12,7 @@ import {
 } from "@ant-design/icons";
 
 import { loginUser } from "../services/api";
+import { AUTHORIZED_ADMIN_EMAILS } from "./AuthModal";
 
 // Official Google 4-Color SVG Icon
 const GoogleIcon = ({ className = "w-4 h-4" }) => (
@@ -41,18 +42,33 @@ const AdminAuthModal = ({ open, onClose, onLoginSuccess }) => {
 
   const handleAdminLogin = async (values) => {
     setLoading(true);
+    const emailInput = (values.email || "").toLowerCase().trim();
+    const passwordInput = values.password || "";
+
     try {
       const res = await loginUser({
-        email: values.email,
-        password: values.password || "adminpassword",
+        email: emailInput,
+        password: passwordInput,
       });
 
       const apiUser = res.data || res;
+      const isAuthorized =
+        apiUser.role === "admin" ||
+        AUTHORIZED_ADMIN_EMAILS.includes(emailInput);
+
+      if (!isAuthorized) {
+        throw new Error("This account does not have SuperAdmin executive privileges.");
+      }
+
       const userData = {
         id: apiUser.id || Date.now(),
         role: "admin",
-        name: apiUser.name || "SuperAdmin Legacy",
-        email: apiUser.email || values.email,
+        name:
+          apiUser.name ||
+          (emailInput.includes("veasna")
+            ? "Veasna Reaksa"
+            : "SuperAdmin Legacy"),
+        email: apiUser.email || emailInput,
       };
 
       notification.success({
@@ -67,24 +83,49 @@ const AdminAuthModal = ({ open, onClose, onLoginSuccess }) => {
         onLoginSuccess(userData);
       }
     } catch (error) {
-      console.warn("Fallback admin login:", error);
-      const userData = {
-        id: Date.now(),
-        role: "admin",
-        name: "SuperAdmin Legacy",
-        email: values.email || "admin@legacystore.com",
-      };
+      console.warn("Backend admin login check:", error);
 
-      notification.success({
-        message: "EXECUTIVE ACCESS GRANTED",
-        description:
-          "Authenticated successfully. Welcome to Admin Management Panel.",
-        placement: "bottomRight",
-        duration: 2.5,
-      });
+      // Secure offline/demo verification: MUST strictly match authorized admin credentials
+      const isMasterAdmin =
+        (emailInput === "admin@legacystore.com" &&
+          passwordInput === "adminpassword") ||
+        (emailInput === "admin@alexandreluxe.com" &&
+          passwordInput === "password123") ||
+        (emailInput === "veasnareaksa155@gmail.com" &&
+          (passwordInput === "password123" ||
+            passwordInput === "adminpassword"));
 
-      if (onLoginSuccess) {
-        onLoginSuccess(userData);
+      if (isMasterAdmin) {
+        const userData = {
+          id: Date.now(),
+          role: "admin",
+          name: emailInput.includes("veasna")
+            ? "Veasna Reaksa"
+            : "SuperAdmin Legacy",
+          email: emailInput,
+        };
+
+        notification.success({
+          message: "EXECUTIVE ACCESS GRANTED",
+          description:
+            "Authenticated successfully. Welcome to Admin Management Panel.",
+          placement: "bottomRight",
+          duration: 2.5,
+        });
+
+        if (onLoginSuccess) {
+          onLoginSuccess(userData);
+        }
+      } else {
+        notification.error({
+          message: "ACCESS DENIED",
+          description:
+            error?.response?.data?.message ||
+            error?.message ||
+            "Invalid administrator credentials. Access restricted to authorized personnel.",
+          placement: "bottomRight",
+          duration: 4,
+        });
       }
     } finally {
       setLoading(false);
@@ -107,22 +148,15 @@ const AdminAuthModal = ({ open, onClose, onLoginSuccess }) => {
   const handleGoogleAdminLogin = () => {
     const activeClientId =
       import.meta.env.VITE_GOOGLE_CLIENT_ID ||
-      localStorage.getItem("legacy_google_client_id") ||
       "467071922758-nnuii5qlkbatresoeee4g0o9524h9s3s.apps.googleusercontent.com";
 
     if (!window.google?.accounts?.oauth2) {
-      const userData = {
-        id: Date.now(),
-        role: "admin",
-        name: "Veasna Reaksa",
-        email: "veasnareaksa155@gmail.com",
-      };
-      notification.success({
-        message: "EXECUTIVE ACCESS GRANTED",
-        description: "Authenticated successfully with Google SuperAdmin profile.",
+      notification.warning({
+        message: "INITIALIZING GOOGLE SERVICES",
+        description:
+          "Google verification service is loading. Please click again in a moment.",
         placement: "bottomRight",
       });
-      if (onLoginSuccess) onLoginSuccess(userData);
       return;
     }
 
@@ -142,11 +176,23 @@ const AdminAuthModal = ({ open, onClose, onLoginSuccess }) => {
                 }
               );
               const googleUser = await res.json();
+              const email = (googleUser.email || "").toLowerCase().trim();
+
+              if (!AUTHORIZED_ADMIN_EMAILS.includes(email)) {
+                notification.error({
+                  message: "SUPERADMIN ACCESS DENIED",
+                  description: `The Google account (${email}) is not authorized for SuperAdmin privileges.`,
+                  placement: "bottomRight",
+                  duration: 4,
+                });
+                return;
+              }
+
               const userData = {
                 id: Date.now(),
                 role: "admin",
-                name: googleUser.name || "SuperAdmin",
-                email: googleUser.email || "veasnareaksa155@gmail.com",
+                name: googleUser.name || "Veasna Reaksa",
+                email: googleUser.email,
                 avatar: googleUser.picture || null,
               };
               notification.success({
@@ -155,27 +201,25 @@ const AdminAuthModal = ({ open, onClose, onLoginSuccess }) => {
                 placement: "bottomRight",
               });
               if (onLoginSuccess) onLoginSuccess(userData);
-            } catch {
-              const userData = {
-                id: Date.now(),
-                role: "admin",
-                name: "Veasna Reaksa",
-                email: "veasnareaksa155@gmail.com",
-              };
-              if (onLoginSuccess) onLoginSuccess(userData);
+            } catch (err) {
+              console.error("Failed to verify Google SuperAdmin:", err);
+              notification.error({
+                message: "AUTHENTICATION FAILED",
+                description: "Could not verify Google account credentials.",
+                placement: "bottomRight",
+              });
             }
           }
         },
       });
       tokenClient.requestAccessToken({ prompt: "select_account" });
-    } catch {
-      const userData = {
-        id: Date.now(),
-        role: "admin",
-        name: "Veasna Reaksa",
-        email: "veasnareaksa155@gmail.com",
-      };
-      if (onLoginSuccess) onLoginSuccess(userData);
+    } catch (err) {
+      notification.error({
+        message: "GOOGLE POPUP BLOCKED OR FAILED",
+        description:
+          err?.message || "Please allow browser popups to sign in with Google.",
+        placement: "bottomRight",
+      });
     }
   };
 

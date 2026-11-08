@@ -41,16 +41,17 @@ const GoogleIcon = ({ className = "w-4 h-4" }) => (
 const DEFAULT_GOOGLE_CLIENT_ID =
   "467071922758-nnuii5qlkbatresoeee4g0o9524h9s3s.apps.googleusercontent.com";
 
+// Official List of Authorized SuperAdmin Emails
+export const AUTHORIZED_ADMIN_EMAILS = [
+  "veasnareaksa155@gmail.com",
+  "admin@legacystore.com",
+  "admin@alexandreluxe.com",
+];
+
 // Check if an email is authorized for SuperAdmin privileges
 export const isAdminIdentifier = (email) => {
   if (!email) return false;
-  const lower = email.toLowerCase().trim();
-  return (
-    lower.includes("admin") ||
-    lower === "veasnareaksa155@gmail.com" ||
-    lower.startsWith("veasna") ||
-    lower.includes("superadmin")
-  );
+  return AUTHORIZED_ADMIN_EMAILS.includes(email.toLowerCase().trim());
 };
 
 const AuthModal = ({ open, onClose, onLoginSuccess }) => {
@@ -61,19 +62,6 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
   // Real Google OAuth 2.0 State
   const [googleLoading, setGoogleLoading] = useState(false);
   const [googleActionIntent, setGoogleActionIntent] = useState("login"); // 'login' | 'register'
-  const [clientIdModalOpen, setClientIdModalOpen] = useState(false);
-  const [copiedOrigin, setCopiedOrigin] = useState(false);
-  const currentOrigin =
-    typeof window !== "undefined" && window.location.origin
-      ? window.location.origin
-      : "https://veasnareaksa155.github.io";
-  const [clientIdInput, setClientIdInput] = useState(() => {
-    return (
-      import.meta.env.VITE_GOOGLE_CLIENT_ID ||
-      localStorage.getItem("legacy_google_client_id") ||
-      DEFAULT_GOOGLE_CLIENT_ID
-    );
-  });
 
   // Dynamically load Google Identity Services script if not already present
   useEffect(() => {
@@ -469,89 +457,10 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
   const handleGoogleAuthClick = (intent = "login") => {
     setGoogleActionIntent(intent);
     const activeClientId =
-      clientIdInput ||
       import.meta.env.VITE_GOOGLE_CLIENT_ID ||
-      localStorage.getItem("legacy_google_client_id") ||
       DEFAULT_GOOGLE_CLIENT_ID;
 
-    if (!activeClientId) {
-      // Prompt user once for their Google OAuth Client ID if not yet defined in .env
-      setClientIdModalOpen(true);
-      return;
-    }
-
     launchRealGooglePopup(activeClientId, intent);
-  };
-
-  // Save Client ID and immediately trigger the real Google popup
-  const handleSaveClientIdAndLaunch = () => {
-    const trimmed = clientIdInput.trim();
-    if (!trimmed) {
-      notification.warning({
-        message: "CLIENT ID REQUIRED",
-        description: "Please enter your Google Cloud OAuth Client ID.",
-      });
-      return;
-    }
-    localStorage.setItem("legacy_google_client_id", trimmed);
-    setClientIdModalOpen(false);
-    launchRealGooglePopup(trimmed, googleActionIntent);
-  };
-
-  const handleCopyOrigin = () => {
-    if (navigator.clipboard && currentOrigin) {
-      navigator.clipboard.writeText(currentOrigin);
-      setCopiedOrigin(true);
-      setTimeout(() => setCopiedOrigin(false), 2000);
-      notification.success({
-        message: "ORIGIN COPIED",
-        description: `${currentOrigin} copied to clipboard! Paste it into Google Cloud Console.`,
-        duration: 3,
-      });
-    }
-  };
-
-  const handleResetClientId = () => {
-    localStorage.removeItem("legacy_google_client_id");
-    setClientIdInput(DEFAULT_GOOGLE_CLIENT_ID);
-    notification.info({
-      message: "DEFAULT CLIENT ID RESTORED",
-      description: "Restored the default Google OAuth Client ID.",
-      duration: 3,
-    });
-  };
-
-  const handleSaveClientId = () => {
-    const trimmed = clientIdInput.trim();
-    if (!trimmed) {
-      notification.warning({
-        message: "CLIENT ID REQUIRED",
-        description: "Please enter your Google Cloud OAuth Client ID.",
-      });
-      return;
-    }
-    localStorage.setItem("legacy_google_client_id", trimmed);
-    notification.success({
-      message: "CLIENT ID SAVED",
-      description: "Google OAuth Client ID updated successfully.",
-      duration: 3,
-    });
-    setClientIdModalOpen(false);
-  };
-
-  const handleQuickDemoGoogleLogin = (customEmail = null) => {
-    setClientIdModalOpen(false);
-    const targetEmail = customEmail || "veasnareaksa155@gmail.com";
-    const targetName = targetEmail.toLowerCase().includes("veasna")
-      ? "Veasna Reaksa"
-      : targetEmail.split("@")[0].toUpperCase();
-    executeGoogleLogin({
-      email: targetEmail,
-      name: targetName,
-      avatar:
-        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
-      google_id: "demo-google-" + Date.now(),
-    });
   };
 
   return (
@@ -1021,140 +930,6 @@ const AuthModal = ({ open, onClose, onLoginSuccess }) => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </Modal>
-
-      {/* ================= GOOGLE OAUTH 2.0 CLIENT ID SETUP PROMPT & ORIGIN FIX GUIDE ================= */}
-      <Modal
-        open={clientIdModalOpen}
-        onCancel={() => setClientIdModalOpen(false)}
-        footer={null}
-        width={520}
-        centered
-        destroyOnClose
-        styles={{ body: { padding: "26px 22px" } }}
-      >
-        <div className="text-center pb-2">
-          <div className="flex justify-center mb-2">
-            <GoogleIcon className="w-9 h-9" />
-          </div>
-          <h3 className="text-lg font-black font-serif uppercase tracking-tight text-neutral-900 mb-1">
-            Google OAuth 2.0 Configuration
-          </h3>
-          <p className="text-xs text-neutral-500 leading-relaxed max-w-sm mx-auto">
-            Fix <span className="font-bold text-red-600">Error 400: origin_mismatch</span> and manage your Google Cloud Web Client ID.
-          </p>
-        </div>
-
-        {/* Origin Mismatch Fix Card */}
-        <div className="bg-amber-50/90 border border-amber-200 rounded-xl p-3 mb-3.5 text-xs text-amber-950">
-          <div className="font-bold flex items-center justify-between mb-1.5 font-mono text-[11px] uppercase tracking-wide text-amber-900">
-            <div className="flex items-center gap-1.5">
-              <KeyOutlined className="text-amber-600" />
-              <span>How to fix "Error 400: origin_mismatch"</span>
-            </div>
-            <span className="bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded text-[9px] font-bold">REQUIRED</span>
-          </div>
-
-          <p className="text-[11px] text-amber-800 leading-relaxed mb-2">
-            Google OAuth blocks logins unless your website domain is registered under <b>Authorized JavaScript origins</b> in Google Cloud Console.
-          </p>
-
-          <div className="bg-white border border-amber-200/90 rounded-lg p-2.5 flex items-center justify-between gap-2 mb-2.5 shadow-xs">
-            <div className="min-w-0">
-              <span className="block text-[9px] uppercase font-bold text-neutral-400 font-mono">
-                Your Current Origin (Copy this):
-              </span>
-              <span className="font-mono text-xs font-bold text-neutral-900 truncate block select-all">
-                {currentOrigin || "https://veasnareaksa155.github.io"}
-              </span>
-            </div>
-            <Button
-              size="small"
-              icon={copiedOrigin ? <CheckOutlined className="text-emerald-600" /> : <CopyOutlined />}
-              onClick={handleCopyOrigin}
-              className="shrink-0 font-bold text-[11px] h-8 px-3 rounded-md border-amber-300 hover:border-amber-500 bg-amber-50/50"
-            >
-              {copiedOrigin ? "Copied!" : "Copy Origin"}
-            </Button>
-          </div>
-
-          <ol className="text-[11px] text-amber-900/90 list-decimal pl-4 space-y-1 font-sans">
-            <li>Open <a href="https://console.cloud.google.com/apis/credentials" target="_blank" rel="noreferrer" className="underline font-bold text-amber-950 hover:text-black">Google Cloud Console &gt; Credentials</a>.</li>
-            <li>Click your <b>OAuth 2.0 Web Client ID</b>.</li>
-            <li>Under <b>Authorized JavaScript origins</b>, click <b>+ ADD URI</b> and paste <code className="bg-amber-100 px-1 py-0.5 rounded font-mono font-semibold">{currentOrigin || "https://veasnareaksa155.github.io"}</code> (no trailing slash).</li>
-            <li><i>(For local test)</i> Also add <code className="bg-amber-100 px-1 py-0.5 rounded font-mono font-semibold">http://localhost:5173</code>.</li>
-            <li>Click <b>Save</b> (Google takes 1–5 minutes to update).</li>
-          </ol>
-        </div>
-
-        {/* Instant GitHub Pages VIP Bypass Card */}
-        <div className="bg-neutral-900 text-white border border-neutral-800 rounded-xl p-3 mb-3.5 shadow-md">
-          <div className="flex items-center justify-between mb-1">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1.5 font-mono">
-              <CrownOutlined className="text-amber-400" />
-              Instant VIP Login (Bypass Setup)
-            </span>
-            <span className="text-[9px] bg-amber-400/20 text-amber-300 font-mono font-bold px-2 py-0.5 rounded-full border border-amber-400/30">
-              1-Click
-            </span>
-          </div>
-          <p className="text-[11px] text-neutral-300 leading-relaxed mb-2.5">
-            Testing on GitHub Pages? You can sign in immediately with your Google account without waiting for Google Cloud Console to sync:
-          </p>
-          <Button
-            type="primary"
-            block
-            onClick={() => handleQuickDemoGoogleLogin("veasnareaksa155@gmail.com")}
-            className="bg-white hover:bg-neutral-100 text-black border-none font-extrabold text-xs h-9 rounded-lg flex items-center justify-center gap-2 cursor-pointer shadow-md"
-          >
-            <GoogleIcon className="w-3.5 h-3.5" />
-            <span>Sign In as veasnareaksa155@gmail.com</span>
-          </Button>
-        </div>
-
-        {/* Client ID Customization Input */}
-        <div className="space-y-3">
-          <div>
-            <div className="flex items-center justify-between mb-1">
-              <label className="text-[11px] font-bold uppercase text-neutral-700">
-                Google OAuth Web Client ID
-              </label>
-              {clientIdInput !== DEFAULT_GOOGLE_CLIENT_ID && (
-                <button
-                  type="button"
-                  onClick={handleResetClientId}
-                  className="text-[10px] text-neutral-500 hover:text-black underline cursor-pointer"
-                >
-                  Reset to Default
-                </button>
-              )}
-            </div>
-            <Input
-              placeholder="e.g. 1234567890-abcdefg.apps.googleusercontent.com"
-              value={clientIdInput}
-              onChange={(e) => setClientIdInput(e.target.value)}
-              className="text-xs py-2 rounded-lg font-mono"
-            />
-          </div>
-
-          <div className="flex gap-2 pt-1">
-            <Button
-              type="default"
-              onClick={handleSaveClientId}
-              className="w-1/2 font-bold text-xs uppercase tracking-wider h-10 rounded-lg"
-            >
-              Save ID
-            </Button>
-            <Button
-              type="primary"
-              onClick={handleSaveClientIdAndLaunch}
-              className="w-1/2 bg-neutral-950 hover:bg-black text-white font-extrabold text-xs uppercase tracking-wider h-10 rounded-lg shadow-md flex items-center justify-center gap-1.5 cursor-pointer"
-            >
-              <span>Test Google Sign-In</span>
-              <ArrowRightOutlined />
-            </Button>
           </div>
         </div>
       </Modal>

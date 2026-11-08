@@ -34,6 +34,18 @@ notification.config({
   rootClassName: "luxe-vip-notification",
 });
 
+// Official List of Authorized SuperAdmin Emails
+const AUTHORIZED_ADMIN_EMAILS = [
+  "veasnareaksa155@gmail.com",
+  "admin@legacystore.com",
+  "admin@alexandreluxe.com",
+];
+
+const isAuthorizedAdminEmail = (email) => {
+  if (!email) return false;
+  return AUTHORIZED_ADMIN_EMAILS.includes(email.toLowerCase().trim());
+};
+
 function App() {
   // State variables (with instant 0ms local cache initialization)
   const [categories, setCategories] = useState(() => {
@@ -98,12 +110,7 @@ function App() {
       const userObj = JSON.parse(saved);
       if (userObj) {
         const email = (userObj.email || "").toLowerCase().trim();
-        if (
-          userObj.role !== "admin" &&
-          (email.includes("admin") ||
-            email === "veasnareaksa155@gmail.com" ||
-            email.startsWith("veasna"))
-        ) {
+        if (userObj.role !== "admin" && isAuthorizedAdminEmail(email)) {
           userObj.role = "admin";
           localStorage.setItem("alexandre_luxe_user", JSON.stringify(userObj));
         }
@@ -116,11 +123,7 @@ function App() {
 
   const [userSessionRole, setUserSessionRole] = useState(() => {
     const email = (currentUser?.email || "").toLowerCase().trim();
-    if (
-      email.includes("admin") ||
-      email === "veasnareaksa155@gmail.com" ||
-      email.startsWith("veasna")
-    ) {
+    if (isAuthorizedAdminEmail(email)) {
       return "admin";
     }
     return currentUser?.role || "user";
